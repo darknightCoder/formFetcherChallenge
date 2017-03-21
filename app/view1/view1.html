@@ -1,29 +1,12 @@
-<p></p>
-
-<ul>
-
-    <li ng-repeat="data in model.formData.formFields">
-        <p>{{data.description}}</p>
-        <label for="">{{data.label}}</label>
-
-        <select class="form-group" ng-if="data.component==='select'" ng-required="{{data.required}}"  contenteditable="{{data.editable}}">
-            <option value="{{option}}" ng-repeat="option in data.options">{{option}}</option>
-
-        </select>
-
-        <div class="form-group" ng-if="data.component==='textarea'">
-            <textarea  ng-required="{{data.required}}"  contenteditable="{{data.editable}}">
-            </textarea>
-
+<div>
+    <div class="container text-center btn-center">
+        <div id="busy-loading" ng-if="model.isLoading">
+            <img class="loading" src="https://img.gifamerica.com/5359a51eface87644026ae0ad303dad0_guest-jsp-loading-gif_340-340.gif" alt="loading...">
 
         </div>
 
-        <div class="form-group" ng-if="data.component==='textinput'">
-            <textarea type="text" ng-required="{{data.required}}"  contenteditable="{{data.editable}}">
-            </textarea>
-
-
-        </div>
-
-    </li>
-</ul>
+        <button ng-click="getForm()" class="btn btn-lg btn-info presentation-button">
+           Click Here To Load The Random Form
+        </button>
+    </div>
+</div>

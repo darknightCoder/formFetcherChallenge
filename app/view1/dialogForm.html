@@ -1,0 +1,87 @@
+<form name="create_form"  ng-submit="submitData(model)" autocomplete="off" novalidate>
+    <div class="modal-header">
+        <a href="javascript:void(0);" name="action_close" class="close" title="Close" ng-click="cancelHandler()">&times;</a>
+        <a href="javascript:void(0);" name="action_help" class="help" title="Help" ng-click="">?</a>
+        <h3 class="modal-title text-center  ">{{model.formData.displayName}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="" ng-repeat="data in model.formData.formFields" >
+
+
+
+          <div class="form-group"  ng-if="data.component==='select'">
+              <h4 class="txt txt-info">{{data.description}}</h4>
+              <label class="control-label">{{data.label}}</label>
+              <select class="form-control" name="selectType" ng-change="selectProviderTypeChangeHandler()" ng-model="data.selectedValue" ng-options="option for option in data.options ">
+              </select>
+          </div>
+
+
+          <div class="form-group" ng-if="data.component==='textinput'">
+              <h4 >{{data.description}}</h4>
+              <label class="control-label required-field" for="displayName">{{data.label}}</label>
+              <input class="form-control" name="displayName" type="text" ng-model="data.selectedValue"  ng-required="data.required" maxlength="255" ng-maxlength="255" >
+          </div>
+
+
+
+          <div class="form-group" ng-if="data.component==='textarea'">
+              <h4>{{data.description}}</h4>
+              <label class="control-label" for="description">{{data.label}}</label>
+              <textarea class="form-control" name="description" rows="4" type="text" ng-model="data.selectedValue" maxlength="255"  ng-required="data.required" ng-maxlength="255" ></textarea>
+          </div>
+
+
+
+          <div class="form-group" ng-if="data.component==='checkbox'">
+              <h4>{{data.description}}</h4>
+              <label for="">{{data.label}}</label>
+              <p ng-repeat="option in data.options" class="checkbox-option">
+                  <input  class="form-control col-sm-2"
+                          type="checkbox"
+                          name="option[]"
+                          value="{{option}}"
+                          ng-checked="selection.indexOf(option) > -1"
+                          ng-click="toggleSelection(option)"
+                          ng-model="data.selectedValue"
+                  > {{option}}
+              </p>
+
+
+
+          </div>
+
+            <div class="form-group" ng-if="data.component==='radio'">
+                <h4>{{data.description}}</h4>
+                <label for="">{{data.label}}</label>
+                <p ng-repeat="option in data.options" class="checkbox-option">
+
+
+                    <input  class="form-control col-sm-2"
+                            type="radio"
+                            name="option[]"
+                            value="{{option}}"
+                            ng-checked="selection.indexOf(option) > -1"
+                            ng-click="toggleSelection(option)"
+                            ng-model="data.selectedValue"
+                    >
+                {{option}}
+                </p>
+
+
+
+            </div>
+            <hr>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" name="action_save" ng-class="{disabled: isSaveInProgress}" >
+            SAVE
+        </button>
+        <button type="button" class="btn btn-warning" name="action_cancel" ng-class="{disabled: isSaveInProgress}" ng-click="cancelHandler()">
+            CANCEL
+        </button>
+    </div>
+</form>

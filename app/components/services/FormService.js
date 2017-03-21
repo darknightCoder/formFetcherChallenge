@@ -16,13 +16,8 @@
                 submitFormData: function (formData) {
                     return $http({
                         method: 'POST',
-                        url: '/csa/api/components/:id',
-                        interceptor: {
-                            response: function (data) {
-                                $rootScope.$broadcast('ComponentService.UPDATED');
-                                return data;
-                            }
-                        }
+                        url: 'https://randomform.herokuapp.com/submit',
+                        data:formData
                     })
                 }
             }

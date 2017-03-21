@@ -1,5 +1,11 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+<div class="container">
+  <div class="jumbotron" ng-if="model.success">
+
+  <h3>Great! You Have successfully submitted the form</h3>
+  <h4>Try Another ? <a href="#!/home">Click Here</a></h4>
+
+  </div>
+  <div class="jumbotron" ng-if="!model.success">
+    You are lost!  <a href="#!/home">Click Here</a></h4>
+  </div>
+</div>
