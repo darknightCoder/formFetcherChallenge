@@ -9,64 +9,74 @@
 
 
 
-          <div class="form-group"  ng-if="data.component==='select'">
-              <h4 class="txt txt-info">{{data.description}}</h4>
-              <label class="control-label">{{data.label}}</label>
-              <select class="form-control" name="selectType" ng-change="selectProviderTypeChangeHandler()" ng-model="data.selectedValue" ng-options="option for option in data.options ">
+          <div class="form-group"  ng-if="data.component==='select'" ng-focus="data.showDes=true" ng-blur="data.showDesc=false">
+
+              <label class="control-label custom">{{data.label}}:</label>
+              <span ng-if="data.required" class="text-danger"><h5>*</h5></span>
+              <select  class="form-control" name="selectType_{{$index}}" ng-change="selectProviderTypeChangeHandler()"  required="data.required" ng-required="data.required" ng-model="data.selectedValue" ng-options="option for option in data.options">
               </select>
+              <span ng-show="create_form['selectType_'+$index].$error.required && create_form['selectType_'+$index].$dirty" class="input-help">This field is required!</span>
           </div>
 
 
           <div class="form-group" ng-if="data.component==='textinput'">
-              <h4 >{{data.description}}</h4>
-              <label class="control-label required-field" for="displayName">{{data.label}}</label>
-              <input class="form-control" name="displayName" type="text" ng-model="data.selectedValue"  ng-required="data.required" maxlength="255" ng-maxlength="255" >
+              <label class="control-label required-field custom" for="displayName" title="{{data.description}}">{{data.label}}:</label>
+              <input class="form-control" name="displayName_{{$index}}"  id="displayName" type="text" ng-model="data.selectedValue"  ng-pattern="data.validation" ng-required="{{data.required}}" maxlength="255" ng-maxlength="255" >
+              <span ng-show="create_form['displayName_'+$index].$error.pattern && create_form['displayName_'+$index].$dirty" class="text-warning input-help">Not a valid Input!</span>
+              <span ng-show="create_form['displayName_'+$index].$error.required  && create_form['displayName_'+$index].$dirty" class="text-warning input-help">This field is required!</span>
           </div>
 
 
 
           <div class="form-group" ng-if="data.component==='textarea'">
-              <h4>{{data.description}}</h4>
-              <label class="control-label" for="description">{{data.label}}</label>
-              <textarea class="form-control" name="description" rows="4" type="text" ng-model="data.selectedValue" maxlength="255"  ng-required="data.required" ng-maxlength="255" ></textarea>
+              <label class="control-label custom"  for="description" title="{{data.description}}">{{data.label}}</label>
+              <textarea  class="form-control" id="description" name="description_{{$index}}" rows="4" type="text" ng-model="data.selectedValue" maxlength="255" ng-pattern="data.validation" ng-required="data.required" ng-maxlength="255" ></textarea>
+              <span ng-show="create_form['description_'+$index].$error.pattern && create_form['description_'+$index].$dirty" class="text-warning input-help">Not a valid Input!</span>
+              <span ng-show="create_form['description_'+$index].$error.required && create_form['description_'+$index].$dirty" class="text-warning input-help">This field is required!</span>
           </div>
 
 
 
           <div class="form-group" ng-if="data.component==='checkbox'">
-              <h4>{{data.description}}</h4>
-              <label for="">{{data.label}}</label>
-              <p ng-repeat="option in data.options" class="checkbox-option">
-                  <input  class="form-control col-sm-2"
+              <label for="check" class="custom"  title="{{data.description}}" title="{{data.description}}" ng-init="data.selectedValue=[]">{{data.label}}:</label>
+              <p ng-repeat="option in data.options track by $index" class="checkbox-option">
+                  <input  class="form-control col-sm-2 pull-left"
                           type="checkbox"
-                          name="option[]"
+                          name="option_{{$index}}"
                           value="{{option}}"
-                          ng-checked="selection.indexOf(option) > -1"
-                          ng-click="toggleSelection(option)"
-                          ng-model="data.selectedValue"
+                          ng-required="data.required"
+                          required="data.required"
+
+                          ng-checked="data.selectedValue.indexOf(option)!= -1"
+                          ng-click="toggleSelection(data.selectedValue,option)"
+                          id="check"
                   > {{option}}
               </p>
+              <span ng-show="create_form['option_'+$index].$error.required && create_form['option'+$index].$dirty" class="text-warning input-help">This field is required!</span>
 
 
 
-          </div>
+           </div>
 
             <div class="form-group" ng-if="data.component==='radio'">
-                <h4>{{data.description}}</h4>
-                <label for="">{{data.label}}</label>
-                <p ng-repeat="option in data.options" class="checkbox-option">
+                <label for="radio" class="custom" title="{{data.description}}">{{data.label}}:</label>
+                <p ng-repeat="option in data.options track by $index" class="checkbox-option">
 
 
-                    <input  class="form-control col-sm-2"
+                    <input  class="form-control col-sm-2 pull-left"
                             type="radio"
-                            name="option[]"
+                            name="optionradio_{{$index}}"
+                            ng-required="data.required"
+                            required="data.required"
                             value="{{option}}"
-                            ng-checked="selection.indexOf(option) > -1"
-                            ng-click="toggleSelection(option)"
+                            ng-checked="option.selected"
+                            ng-click="!option.selected"
                             ng-model="data.selectedValue"
+                            id="radio"
                     >
                 {{option}}
                 </p>
+                <span ng-show="create_form['optionradio_'+$index].$error.required && create_form['optionradion_'+$index].$dirty" class="text-warning input-help">This field is required!</span>
 
 
 
@@ -77,7 +87,7 @@
 
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" name="action_save" ng-class="{disabled: isSaveInProgress}" >
+        <button type="submit" class="btn btn-info" name="action_save" ng-disabled="create_form.$invalid" ng-class="{disabled: isSaveInProgress}" >
             SAVE
         </button>
         <button type="button" class="btn btn-warning" name="action_cancel" ng-class="{disabled: isSaveInProgress}" ng-click="cancelHandler()">

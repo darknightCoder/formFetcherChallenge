@@ -78,6 +78,20 @@ angular.module('myApp.view1', ['ngRoute','myApp.formModel','myApp.service','ui.b
     $modalInstance.close('success');
 
   };
+  $scope.toggleSelection = function (arr,data) {
+
+
+      $scope.toggleCheck = function (arr,data) {
+
+          if (arr.indexOf(data) === -1) {
+              arr.push(data);
+          } else {
+              arr.splice(arr.indexOf(data), 1);
+          }
+      };
+      $scope.toggleCheck(arr,data);
+      
+  }  
   $scope.closeHandler = function (data) {
     $modalInstance.close(data);
   };

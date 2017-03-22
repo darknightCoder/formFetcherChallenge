@@ -71,3 +71,52 @@ input[type="radio"], input[type="checkbox"] {
   left: 0px;
   right: 0px;
 }
+
+/* Tooltip container */
+.tooltip {
+  opacity:0.7;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 7px;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  width: 120px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.input-help {
+  position:absolute;
+  z-index: 100;
+  left: 160px;
+  width:200px;
+  padding:10px;
+  background:#fefefe;
+  font-size:.875em;
+  border-radius:5px;
+  box-shadow:0 1px 3px #aaa;
+  border:1px solid #ddd;
+  opacity: 0.9;
+}
+h3,label{
+  text-transform: capitalize;
+}
+.form-group{
+  padding: 10px;
+}
+.custom {
+  display: inline-block;
+  padding-bottom: 10px;
+}
