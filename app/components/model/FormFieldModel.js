@@ -9,6 +9,8 @@
 angular.module('myApp.formFieldmodel',[]).factory('FormFieldModel',
     function () {
         var FormFieldModel = function () {
+            this.autoselect = [];
+            this.autofill = "";
             this.component = "";
             this.description = "";
             this.editable = false;
@@ -20,7 +22,8 @@ angular.module('myApp.formFieldmodel',[]).factory('FormFieldModel',
 
         FormFieldModel.prototype.deSerialize = function (formFields) {
 
-
+            this.autoselect = formFields.autoselect;
+            this.autofill = formFields.autofill;
             this.component = formFields.component;
             this.description = formFields.description;
             this.editable = formFields.editable;
@@ -28,17 +31,14 @@ angular.module('myApp.formFieldmodel',[]).factory('FormFieldModel',
             this.required = formFields.required;
             this.validation = formFields.validation;
             this.options = formFields.options;
+
         };
 
         FormFieldModel.prototype.serialize = function () {
             return {
-                "@self": this.getSelf(),
-                id: this.id,
-                name: this.displayName,
-                description: this.description,
-                icon: this.icon,
-                color: this.color,
-                scopes: this.scopes
+
+                //to-do
+
             };
         };
 

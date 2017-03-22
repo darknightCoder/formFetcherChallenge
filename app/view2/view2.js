@@ -11,7 +11,6 @@ angular.module('myApp.view2', ['ngRoute'])
 
 .controller('View2Ctrl', ['$scope','$routeParams','$rootScope',function($scope,$routeParams,$rootScope) {
    $scope.model = {};
-    console.log($rootScope);
 
     $scope.model.success=$rootScope.success;
 }]);

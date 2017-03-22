@@ -13,15 +13,17 @@ angular.module('myApp.view1', ['ngRoute','myApp.formModel','myApp.service','ui.b
 
   $scope.model= {
     formData:null,
-    isLoading:false
+    isLoading:false,
+    err:false
   }
 
   var getHandler = function (result) {
-    if(result) {
+    if(result && result.data) {
       // form model to model the data coming from the api
+
         $scope.model.isLoading=false;
         var formModel = new FormModel();
-      formModel.deSerialize(result.data);
+      formModel.deSerialize(result.data.data);
       $scope.model.formData = formModel;
       console.log(formModel);
 
@@ -36,17 +38,26 @@ angular.module('myApp.view1', ['ngRoute','myApp.formModel','myApp.service','ui.b
         }
       });
       show.result.then(function (data) {
-          console.log("hello",data);
+
           $location.path('view2/'+data.toString());
           if(data) {
               $rootScope.success= data.toString();
           }
       });
     }
-  }
+  };
+    var rejectHandler = function (err) {
+        $scope.isLoading = false;
+        if(err) {
+            $scope.err=true;
+
+        }
+
+    }
   $scope.getForm = function(){
       $scope.model.isLoading=true;
-      FormService.getFormData().success(getHandler);
+      FormService.getFormData().then(getHandler).catch(rejectHandler);
+
   };
 
 }])
@@ -54,7 +65,7 @@ angular.module('myApp.view1', ['ngRoute','myApp.formModel','myApp.service','ui.b
 
 .controller('DialogCtrl', ['$scope','FormModel','FormService','$formModal','options','$modalInstance',function($scope,FormModel,FormService,$formModal,options,$modalInstance) {
 
-  console.log(options);
+
   $scope.model= {
     formData:null,
     isLoading:false
@@ -62,7 +73,7 @@ angular.module('myApp.view1', ['ngRoute','myApp.formModel','myApp.service','ui.b
   $scope.model.formData = options;
 
   $scope.submitData = function (model) {
-    console.log(model);
+
     var result = {
       "data":{
 
@@ -73,6 +84,7 @@ angular.module('myApp.view1', ['ngRoute','myApp.formModel','myApp.service','ui.b
           result["data"][field.label]=field.selectedValue;
         }
       });
+      console.log('post body in format %c label:selectedValue','color: green; font-weight: bold;');
     console.log(result);
     FormService.submitFormData(result);
     $modalInstance.close('success');

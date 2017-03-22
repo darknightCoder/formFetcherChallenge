@@ -12,8 +12,16 @@
           <div class="form-group"  ng-if="data.component==='select'" ng-focus="data.showDes=true" ng-blur="data.showDesc=false">
 
               <label class="control-label custom">{{data.label}}:</label>
-              <span ng-if="data.required" class="text-danger"><h5>*</h5></span>
-              <select  class="form-control" name="selectType_{{$index}}" ng-change="selectProviderTypeChangeHandler()"  required="data.required" ng-required="data.required" ng-model="data.selectedValue" ng-options="option for option in data.options">
+              <span ng-if="data.required" class="text-danger"><h4>*</h4></span>
+              <select
+                      ng-disabled="!data.editable"
+                      class="form-control"
+                      name="selectType_{{$index}}"
+                      ng-init="data.autoselect?data.selectedValue=data.autoselect[0]:data.selectedValue=''"
+                      required="data.required"
+                      ng-required="data.required"
+                      ng-model="data.selectedValue"
+                      ng-options="option for option in data.options">
               </select>
               <span ng-show="create_form['selectType_'+$index].$error.required && create_form['selectType_'+$index].$dirty" class="input-help">This field is required!</span>
           </div>
@@ -21,7 +29,19 @@
 
           <div class="form-group" ng-if="data.component==='textinput'">
               <label class="control-label required-field custom" for="displayName" title="{{data.description}}">{{data.label}}:</label>
-              <input class="form-control" name="displayName_{{$index}}"  id="displayName" type="text" ng-model="data.selectedValue"  ng-pattern="data.validation" ng-required="{{data.required}}" maxlength="255" ng-maxlength="255" >
+              <span ng-if="data.required" class="text-danger"><h4>*</h4></span>
+
+              <input
+                      class="form-control" name="displayName_{{$index}}"
+                      ng-disabled="!data.editable"
+                      ng-init="data.autofill?data.selectedValue=data.autofill:data.selectedValue=''"
+                      id="displayName"
+                      type="text"
+                      ng-model="data.selectedValue"
+                      ng-pattern="data.validation"
+                      ng-required="{{data.required}}"
+              />
+
               <span ng-show="create_form['displayName_'+$index].$error.pattern && create_form['displayName_'+$index].$dirty" class="text-warning input-help">Not a valid Input!</span>
               <span ng-show="create_form['displayName_'+$index].$error.required  && create_form['displayName_'+$index].$dirty" class="text-warning input-help">This field is required!</span>
           </div>
@@ -30,7 +50,19 @@
 
           <div class="form-group" ng-if="data.component==='textarea'">
               <label class="control-label custom"  for="description" title="{{data.description}}">{{data.label}}</label>
-              <textarea  class="form-control" id="description" name="description_{{$index}}" rows="4" type="text" ng-model="data.selectedValue" maxlength="255" ng-pattern="data.validation" ng-required="data.required" ng-maxlength="255" ></textarea>
+              <span ng-if="data.required" class="text-danger"><h4>*</h4></span>
+              <textarea
+                      class="form-control"
+                      id="description"
+                      ng-disabled="!data.editable"
+                      ng-init="data.autofill?data.selectedValue=data.autofill:null"
+                      ng-value="data.autofill" name="description_{{$index}}"
+                      type="text"
+                      ng-model="data.selectedValue"
+                      ng-pattern="data.validation"
+                      ng-required="data.required" >
+
+              </textarea>
               <span ng-show="create_form['description_'+$index].$error.pattern && create_form['description_'+$index].$dirty" class="text-warning input-help">Not a valid Input!</span>
               <span ng-show="create_form['description_'+$index].$error.required && create_form['description_'+$index].$dirty" class="text-warning input-help">This field is required!</span>
           </div>
@@ -38,7 +70,8 @@
 
 
           <div class="form-group" ng-if="data.component==='checkbox'">
-              <label for="check" class="custom"  title="{{data.description}}" title="{{data.description}}" ng-init="data.selectedValue=[]">{{data.label}}:</label>
+              <label for="check" class="custom"  title="{{data.description}}" ng-disabled="!data.editable" title="{{data.description}}" ng-init="data.autoselect?data.selectedValue=data.autoselect:data.selectedValue=[]">{{data.label}}:</label>
+              <span ng-if="data.required" class="text-danger"><h4>*</h4></span>
               <p ng-repeat="option in data.options track by $index" class="checkbox-option">
                   <input  class="form-control col-sm-2 pull-left"
                           type="checkbox"
@@ -46,7 +79,7 @@
                           value="{{option}}"
                           ng-required="data.required"
                           required="data.required"
-
+                          ng-disabled="!data.editable"
                           ng-checked="data.selectedValue.indexOf(option)!= -1"
                           ng-click="toggleSelection(data.selectedValue,option)"
                           id="check"
@@ -59,7 +92,8 @@
            </div>
 
             <div class="form-group" ng-if="data.component==='radio'">
-                <label for="radio" class="custom" title="{{data.description}}">{{data.label}}:</label>
+                <label for="radio" class="custom" title="{{data.description}}" ng-init="data.autoselect?data.selectedValue=data.autoselect[0]:null">{{data.label}}:</label>
+                <span ng-if="data.required" class="text-danger"><h4>*</h4></span>
                 <p ng-repeat="option in data.options track by $index" class="checkbox-option">
 
 
@@ -69,10 +103,11 @@
                             ng-required="data.required"
                             required="data.required"
                             value="{{option}}"
-                            ng-checked="option.selected"
-                            ng-click="!option.selected"
+                            ng-checked="data.selectedValue==option"
+                            ng-click="data.selectedValue=option"
                             ng-model="data.selectedValue"
                             id="radio"
+                            ng-disabled="!data.editable"
                     >
                 {{option}}
                 </p>
